@@ -1,25 +1,62 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <header className="navbar">
       <div className="container navbar__container">
-        <div className="navbar__logo">
+        <Link to="/" className="navbar__logo">
           <span className="navbar__logo-main">Cinema</span>
           <span className="navbar__logo-accent">Book</span>
-        </div>
+        </Link>
 
         <nav className="navbar__menu">
-          <Link to="/" className="navbar__link">Ana Sayfa</Link>
-          <Link to="/movies" className="navbar__link">Filmler</Link>
-          <Link to="/showtimes" className="navbar__link">Seanslar</Link>
-          <Link to="/my-reservations" className="navbar__link">Rezervasyonlarım</Link>
+          <Link to="/" className="navbar__link">
+            Ana Sayfa
+          </Link>
+          <Link to="/movies" className="navbar__link">
+            Filmler
+          </Link>
+
+          {isAuthenticated && (
+            <>
+              <Link to="/my-reservations" className="navbar__link">
+                Rezervasyonlarım
+              </Link>
+              <Link to="/profile" className="navbar__link">
+                Profil
+              </Link>
+            </>
+          )}
         </nav>
 
         <div className="navbar__actions">
-          <button className="navbar__login-btn">Giriş Yap</button>
-          <button className="navbar__register-btn">Kayıt Ol</button>
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login" className="navbar__login-btn">
+                Giriş Yap
+              </Link>
+              <Link to="/register" className="navbar__register-btn">
+                Kayıt Ol
+              </Link>
+            </>
+          ) : (
+            <>
+              <span className="navbar__user-name">{user.name}</span>
+              <button className="navbar__register-btn" onClick={handleLogout}>
+                Çıkış Yap
+              </button>
+            </>
+          )}
         </div>
       </div>
     </header>
