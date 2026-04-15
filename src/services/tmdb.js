@@ -27,3 +27,37 @@ export const getMovieById = async (id) => {
     return null;
   }
 };
+
+export const getMovieVideos = async (id) => {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
+    );
+
+    console.log("Çekilen videolar:", res.data.results);
+    return res.data.results || [];
+  } catch (error) {
+    console.error("Film videoları çekilemedi:", id, error);
+    return [];
+  }
+};
+
+export const getMovieTrailer = async (id) => {
+  try {
+    const videos = await getMovieVideos(id);
+
+    const trailer =
+      videos.find(
+        (video) => video.type === "Trailer" && video.site === "YouTube"
+      ) ||
+      videos.find(
+        (video) => video.type === "Teaser" && video.site === "YouTube"
+      ) ||
+      videos.find((video) => video.site === "YouTube");
+
+    return trailer || null;
+  } catch (error) {
+    console.error("Film fragmanı alınamadı:", id, error);
+    return null;
+  }
+};
