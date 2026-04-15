@@ -1,25 +1,48 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import showtimes from "../../data/showtimes";
-import movies from "../../data/movies";
 import { getSeatsByShowtime } from "../../data/seats";
+import { getMovieById } from "../../services/tmdb";
 import "./SeatSelection.css";
 
 const SeatSelection = () => {
   const { showtimeId } = useParams();
+
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const showtime = showtimes.find(
     (item) => item.id === Number(showtimeId)
   );
 
-  const movie = movies.find(
-    (item) => item.id === showtime?.movieId
-  );
-
   const seats = useMemo(() => {
     return getSeatsByShowtime(Number(showtimeId));
   }, [showtimeId]);
+
+  useEffect(() => {
+    const fetchMovie = async () => {
+      if (!showtime) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+
+      const data = await getMovieById(showtime.movieId);
+
+      if (data) {
+        setMovie({
+          id: data.id,
+          title: data.title,
+        });
+      }
+
+      setLoading(false);
+    };
+
+    fetchMovie();
+  }, [showtime]);
 
   const toggleSeat = (seat) => {
     if (seat.isReserved) return;
@@ -33,11 +56,27 @@ const SeatSelection = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <section className="seat-selection">
+        <div className="container">
+          <h2>Rezervasyon bilgileri yükleniyor...</h2>
+        </div>
+      </section>
+    );
+  }
+
   if (!showtime || !movie) {
     return (
       <section className="seat-selection">
         <div className="container">
           <h2>Seans bulunamadı.</h2>
+          <p className="seat-selection__text">
+            Seçtiğiniz seans veya film bilgisi sistemde bulunamadı.
+          </p>
+          <Link to="/movies" className="booking-summary__back">
+            Filmlere Dön
+          </Link>
         </div>
       </section>
     );
@@ -92,8 +131,18 @@ const SeatSelection = () => {
             </div>
 
             <div className="booking-summary__row">
+              <span>Tarih</span>
+              <span>{showtime.date}</span>
+            </div>
+
+            <div className="booking-summary__row">
               <span>Salon</span>
               <span>{showtime.hall}</span>
+            </div>
+
+            <div className="booking-summary__row">
+              <span>Format</span>
+              <span>{showtime.format}</span>
             </div>
 
             <div className="booking-summary__row">
@@ -115,7 +164,10 @@ const SeatSelection = () => {
               Rezervasyonu Tamamla
             </button>
 
-            <Link to={`/movies/${movie.id}/showtimes`} className="booking-summary__back">
+            <Link
+              to={`/movies/${movie.id}/showtimes`}
+              className="booking-summary__back"
+            >
               Seanslara Geri Dön
             </Link>
           </div>
@@ -126,10 +178,12 @@ const SeatSelection = () => {
             <span className="seat-selection__legend-box"></span>
             <span>Boş</span>
           </div>
+
           <div className="seat-selection__legend-item">
             <span className="seat-selection__legend-box seat-selection__legend-box--selected"></span>
             <span>Seçili</span>
           </div>
+
           <div className="seat-selection__legend-item">
             <span className="seat-selection__legend-box seat-selection__legend-box--reserved"></span>
             <span>Dolu</span>

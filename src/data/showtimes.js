@@ -1,7 +1,7 @@
 const showtimes = [
   {
     id: 1,
-    movieId: 1,
+    movieId: 687163,
     hall: "Salon 1",
     date: "15 Nisan 2026",
     time: "13:00",
@@ -10,7 +10,7 @@ const showtimes = [
   },
   {
     id: 2,
-    movieId: 1,
+    movieId: 687163,
     hall: "Salon 3",
     date: "15 Nisan 2026",
     time: "16:30",
@@ -19,7 +19,7 @@ const showtimes = [
   },
   {
     id: 3,
-    movieId: 1,
+    movieId: 687163,
     hall: "Salon 2",
     date: "15 Nisan 2026",
     time: "20:00",
@@ -28,7 +28,7 @@ const showtimes = [
   },
   {
     id: 4,
-    movieId: 2,
+    movieId: 872585,
     hall: "Salon 4",
     date: "15 Nisan 2026",
     time: "14:00",
@@ -37,7 +37,7 @@ const showtimes = [
   },
   {
     id: 5,
-    movieId: 2,
+    movieId: 872585,
     hall: "Salon 1",
     date: "15 Nisan 2026",
     time: "18:30",
@@ -46,7 +46,7 @@ const showtimes = [
   },
   {
     id: 6,
-    movieId: 3,
+    movieId: 157336,
     hall: "Salon 5",
     date: "15 Nisan 2026",
     time: "17:00",
@@ -55,7 +55,7 @@ const showtimes = [
   },
   {
     id: 7,
-    movieId: 4,
+    movieId: 414906,
     hall: "Salon 2",
     date: "15 Nisan 2026",
     time: "21:00",
@@ -64,7 +64,7 @@ const showtimes = [
   },
 {
   id: 8,
-  movieId: 5,
+  movieId: 1325734,
   hall: "Salon 1",
   date: "16 Nisan 2026",
   time: "14:00",
@@ -73,7 +73,7 @@ const showtimes = [
 },
 {
   id: 9,
-  movieId: 6,
+  movieId: 693134,
   hall: "Salon 2",
   date: "16 Nisan 2026",
   time: "17:00",
@@ -82,7 +82,7 @@ const showtimes = [
 },
 {
   id: 10,
-  movieId: 7,
+  movieId: 969681,
   hall: "Salon 3",
   date: "16 Nisan 2026",
   time: "19:30",
@@ -91,7 +91,7 @@ const showtimes = [
 },
 {
   id: 12,
-  movieId: 8,
+  movieId: 858024,
   hall: "Salon 4",
   date: "16 Nisan 2026",
   time: "21:30",
@@ -99,7 +99,7 @@ const showtimes = [
   format: "IMAX",
 },{
   id: 13,
-  movieId: 8,
+  movieId: 858024,
   hall: "Salon 7",
   date: "17 Nisan 2026",
   time: "13:30",
@@ -107,7 +107,7 @@ const showtimes = [
   format: "3D",
 },{
   id: 14,
-  movieId: 7,
+  movieId: 969681,
   hall: "Salon 1",
   date: "17 Nisan 2026",
   time: "00.00",
@@ -115,7 +115,7 @@ const showtimes = [
   format: "2D",
 },{
   id: 15,
-  movieId: 6,
+  movieId: 693134,
   hall: "Salon 3",
   date: "16 Nisan 2026",
   time: "19:30",
@@ -123,7 +123,7 @@ const showtimes = [
   format: "IMAX",
 },{
   id: 16,
-  movieId: 5,
+  movieId: 1325734,
   hall: "Salon 5",
   date: "16 Nisan 2026",
   time: "21:30",
@@ -132,7 +132,7 @@ const showtimes = [
 },
 {
   id: 17,
-  movieId: 4,
+  movieId: 414906,
   hall: "Salon 9",
   date: "16 Nisan 2026",
   time: "21:30",

@@ -10,21 +10,30 @@ const movieIds = [
   414906,  // The Batman
   1325734, // The Drama
   693134,  // Dune: Part Two
-  969681,  // Spider-man: Brand New Day
+  969681,  // Spider-Man: Brand New Day
   858024,  // Hamnet
 ];
 
 const Movies = () => {
+  console.log("Movies component render oldu");
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("useEffect çalıştı");
+
     const fetchMovies = async () => {
+      console.log("fetchMovies başladı");
       setLoading(true);
 
       const results = await Promise.all(
         movieIds.map(async (id) => {
+          console.log("İstek atılıyor, id:", id);
+
           const movie = await getMovieById(id);
+
+          console.log("Gelen movie:", movie);
 
           if (!movie) return null;
 
@@ -32,19 +41,18 @@ const Movies = () => {
             id: movie.id,
             title: movie.title,
             genre: movie.genres?.[0]?.name || "Film",
-            duration: movie.runtime
-              ? `${movie.runtime} dk`
-              : "Bilinmiyor",
-            rating: movie.vote_average
-              ? movie.vote_average.toFixed(1)
-              : "N/A",
+            duration: movie.runtime ? `${movie.runtime} dk` : "Bilinmiyor",
+            rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
             image: getImageUrl(movie.poster_path),
             description: movie.overview || "Açıklama yok",
           };
         })
       );
 
-      setMovies(results.filter(Boolean));
+      const filteredResults = results.filter(Boolean);
+      console.log("Son movies dizisi:", filteredResults);
+
+      setMovies(filteredResults);
       setLoading(false);
     };
 

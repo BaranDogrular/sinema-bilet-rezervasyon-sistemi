@@ -1,11 +1,48 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import movies from "../../data/movies";
+import { getMovieById, getImageUrl } from "../../services/tmdb";
 import "./MovieDetail.css";
 
 const MovieDetail = () => {
   const { id } = useParams();
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const movie = movies.find((item) => item.id === Number(id));
+  useEffect(() => {
+    const fetchMovie = async () => {
+      setLoading(true);
+
+      const data = await getMovieById(id);
+
+      if (data) {
+        setMovie({
+          id: data.id,
+          title: data.title,
+          genre: data.genres?.map((genre) => genre.name).join(" / ") || "Film",
+          duration: data.runtime ? `${data.runtime} dk` : "Bilinmiyor",
+          rating: data.vote_average ? data.vote_average.toFixed(1) : "N/A",
+          image: getImageUrl(data.poster_path),
+          description: data.overview || "Açıklama bulunamadı.",
+          backdrop: getImageUrl(data.backdrop_path),
+          releaseDate: data.release_date || "Bilinmiyor",
+        });
+      }
+
+      setLoading(false);
+    };
+
+    fetchMovie();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <section className="movie-detail">
+        <div className="container">
+          <h2>Film yükleniyor...</h2>
+        </div>
+      </section>
+    );
+  }
 
   if (!movie) {
     return (
@@ -44,19 +81,20 @@ const MovieDetail = () => {
             <span>{movie.genre}</span>
             <span>{movie.duration}</span>
             <span>⭐ {movie.rating}</span>
+            <span>{movie.releaseDate}</span>
           </div>
 
           <p className="movie-detail__description">{movie.description}</p>
 
           <div className="movie-detail__info-boxes">
             <div className="movie-detail__info-box">
-              <h4>Yönetmen</h4>
-              <p>Christopher Nolan</p>
+              <h4>Tür</h4>
+              <p>{movie.genre}</p>
             </div>
 
             <div className="movie-detail__info-box">
-              <h4>Salon Türü</h4>
-              <p>IMAX / 3D</p>
+              <h4>Süre</h4>
+              <p>{movie.duration}</p>
             </div>
 
             <div className="movie-detail__info-box">

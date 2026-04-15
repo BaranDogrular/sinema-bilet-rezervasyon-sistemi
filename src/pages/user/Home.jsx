@@ -1,8 +1,52 @@
+import { useEffect, useState } from "react";
 import "./Home.css";
-import movies from "../../data/movies";
 import MovieCard from "../../components/movie/MovieCard";
+import { getMovieById, getImageUrl } from "../../services/tmdb";
+
+const movieIds = [
+  687163,  // Project Hail Mary
+  872585,  // Oppenheimer
+  157336,  // Interstellar
+  414906,  // The Batman
+  1325734, // The Drama
+  693134,  // Dune: Part Two
+  969681,  // Spider-Man: Brand New Day
+  858024,  // Hamnet
+];
 
 const Home = () => {
+  const [movies, setMovies] = useState([]);
+  const [loadingMovies, setLoadingMovies] = useState(true);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      setLoadingMovies(true);
+
+      const results = await Promise.all(
+        movieIds.map(async (id) => {
+          const movie = await getMovieById(id);
+
+          if (!movie) return null;
+
+          return {
+            id: movie.id,
+            title: movie.title,
+            genre: movie.genres?.map((genre) => genre.name).join(" / ") || "Film",
+            duration: movie.runtime ? `${movie.runtime} dk` : "Bilinmiyor",
+            rating: movie.vote_average ? movie.vote_average.toFixed(1) : "N/A",
+            image: getImageUrl(movie.poster_path),
+            description: movie.overview || "Açıklama yok",
+          };
+        })
+      );
+
+      setMovies(results.filter(Boolean));
+      setLoadingMovies(false);
+    };
+
+    fetchMovies();
+  }, []);
+
   return (
     <>
       <section className="home-hero">
@@ -19,36 +63,43 @@ const Home = () => {
             </p>
 
             <div className="home-hero__actions">
-              <button className="home-hero__primary-btn">Bilet Al</button>
-              <button className="home-hero__secondary-btn">Vizyondakiler</button>
+              <a href="#featured-movies" className="home-hero__primary-btn">
+                Filmleri İncele
+              </a>
+              <a href="/movies" className="home-hero__secondary-btn">
+                Tüm Filmler
+              </a>
             </div>
           </div>
 
           <div className="home-hero__visual">
             <div className="home-hero__card">
               <p className="home-hero__card-label">Bugünün Öne Çıkanı</p>
-              <h3 className="home-hero__card-title">Dune: Part Two</h3>
+              <h3 className="home-hero__card-title">Project Hail Mary</h3>
               <p className="home-hero__card-info">IMAX • 19:30 • Salon 3</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="featured-movies">
+      <section className="featured-movies" id="featured-movies">
         <div className="container">
           <div className="section-header">
             <div>
               <p className="section-header__subtitle">Vizyondakiler</p>
               <h2 className="section-header__title">Öne Çıkan Filmler</h2>
             </div>
-            <button className="section-header__button">Tümünü Gör</button>
           </div>
 
-          <div className="featured-movies__grid">
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
+          {loadingMovies ? (
+            <p className="home-loading-text">Filmler yükleniyor...</p>
+          ) : (
+            <div className="featured-movies__grid">
+              {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -81,9 +132,13 @@ const Home = () => {
         <div className="container promo__container">
           <div>
             <p className="promo__subtitle">Sinema Keyfini Kaçırma</p>
-            <h2 className="promo__title">Haftanın En Popüler Filmleri Seni Bekliyor</h2>
+            <h2 className="promo__title">
+              Haftanın En Popüler Filmleri Seni Bekliyor
+            </h2>
           </div>
-          <button className="promo__button">Hemen İncele</button>
+          <a href="/movies" className="promo__button">
+            Hemen İncele
+          </a>
         </div>
       </section>
     </>
