@@ -1,7 +1,5 @@
-export const getAllShowtimes = (req, res) => {
-  res.json({
-    showtimes: [
-     {
+const showtimes = [
+ {
     id: 1,
     movieId: 687163,
     hall: "Salon 1",
@@ -141,20 +139,20 @@ export const getAllShowtimes = (req, res) => {
   price: 220,
   format: "IMAX",
 },
-    ],
-  });
+];
+
+export const getAllShowtimes = (req, res) => {
+  res.json({ showtimes });
 };
 
 export const getShowtimeById = (req, res) => {
   const { id } = req.params;
 
-  res.json({
-    id: Number(id),
-    movieId: 687163,
-    hall: "Salon 1",
-    date: "16 Nisan 2026",
-    time: "13:00",
-    price: 180,
-    format: "2D",
-  });
+  const showtime = showtimes.find((item) => item.id === Number(id));
+
+  if (!showtime) {
+    return res.status(404).json({ message: "Seans bulunamadı." });
+  }
+
+  res.json(showtime);
 };

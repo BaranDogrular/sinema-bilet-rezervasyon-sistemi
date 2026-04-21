@@ -1,7 +1,5 @@
-export const getAllReservations = (req, res) => {
-  res.json({
-    reservations: [
-      {
+let reservations = [
+  {
     id: 1,
     userId: 1,
     movieTitle: "Dune: Part Two",
@@ -23,38 +21,53 @@ export const getAllReservations = (req, res) => {
     totalPrice: 570,
     status: "Onaylandı",
   },
-    ],
+];
+
+export const getAllReservations = (req, res) => {
+  res.json({
+    reservations,
   });
 };
 
 export const getReservationById = (req, res) => {
   const { id } = req.params;
 
-  res.json({
-    id: Number(id),
-    userId: 1,
-    movieTitle: "Project Hail Mary",
-    date: "18 Nisan 2026",
-    time: "17:00",
-    hall: "Salon 5",
-    seats: ["C2", "C3"],
-    totalPrice: 380,
-    status: "Onaylandı",
-  });
+  const reservation = reservations.find((item) => item.id === Number(id));
+
+  if (!reservation) {
+    return res.status(404).json({ message: "Rezervasyon bulunamadı." });
+  }
+
+  res.json(reservation);
 };
 
 export const createReservation = (req, res) => {
-  const { movieId, showtimeId, seats, totalPrice } = req.body;
+  const {
+    userId,
+    movieTitle,
+    date,
+    time,
+    hall,
+    seats,
+    totalPrice,
+  } = req.body;
 
-  res.json({
-    message: "Rezervasyon oluşturuldu (test).",
-    reservation: {
-      id: Date.now(),
-      movieId,
-      showtimeId,
-      seats,
-      totalPrice,
-      status: "Onaylandı",
-    },
+  const newReservation = {
+    id: Date.now(),
+    userId,
+    movieTitle,
+    date,
+    time,
+    hall,
+    seats,
+    totalPrice,
+    status: "Onaylandı",
+  };
+
+  reservations.push(newReservation);
+
+  res.status(201).json({
+    message: "Rezervasyon oluşturuldu.",
+    reservation: newReservation,
   });
 };

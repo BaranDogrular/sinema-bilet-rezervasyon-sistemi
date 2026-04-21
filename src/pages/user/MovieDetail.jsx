@@ -1,42 +1,28 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getMovieById, getImageUrl, getMovieTrailer } from "../../services/tmdb";
+import axios from "axios";
 import "./MovieDetail.css";
 
 const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovie = async () => {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const data = await getMovieById(id);
-      const trailerData = await getMovieTrailer(id);
+        const response = await axios.get(
+          `http://localhost:5000/api/movies/${id}`
+        );
 
-      if (data) {
-        setMovie({
-          id: data.id,
-          title: data.title,
-          genre: data.genres?.map((genre) => genre.name).join(" / ") || "Film",
-          duration: data.runtime ? `${data.runtime} dk` : "Bilinmiyor",
-          rating: data.vote_average ? data.vote_average.toFixed(1) : "N/A",
-          image: getImageUrl(data.poster_path),
-          description: data.overview || "Açıklama bulunamadı.",
-          backdrop: getImageUrl(data.backdrop_path),
-          releaseDate: data.release_date || "Bilinmiyor",
-        });
+        setMovie(response.data);
+      } catch (error) {
+        console.error("Film detayı alınamadı:", error);
+      } finally {
+        setLoading(false);
       }
-
-      if (trailerData) {
-        setTrailer(trailerData.key);
-      } else {
-        setTrailer(null);
-      }
-
-      setLoading(false);
     };
 
     fetchMovie();
@@ -125,22 +111,6 @@ const MovieDetail = () => {
           </div>
         </div>
       </div>
-
-      {trailer && (
-        <div className="container movie-detail__trailer">
-          <h3 className="movie-detail__trailer-title">Fragman</h3>
-
-          <iframe
-            width="100%"
-            height="500"
-            src={`https://www.youtube.com/embed/${trailer}`}
-            title={`${movie.title} Trailer`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      )}
     </section>
   );
 };
