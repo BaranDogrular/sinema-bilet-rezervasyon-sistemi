@@ -18,3 +18,4 @@ export const getMovieByIdFromTMDB = async (id) => {
     throw error;
   }
 };
+console.log("SERVER TMDB_API_KEY:", process.env.TMDB_API_KEY);

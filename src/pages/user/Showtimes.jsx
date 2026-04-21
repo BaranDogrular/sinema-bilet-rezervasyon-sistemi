@@ -1,35 +1,43 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 import { getMovieById } from "../../services/tmdb";
-import showtimes from "../../data/showtimes";
 import "./Showtimes.css";
 
 const Showtimes = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [showtimes, setShowtimes] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const movieShowtimes = showtimes.filter(
-    (showtime) => showtime.movieId === Number(id)
-  );
-
   useEffect(() => {
-    const fetchMovie = async () => {
-      setLoading(true);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
 
-      const data = await getMovieById(id);
+        const movieData = await getMovieById(id);
+        const showtimeRes = await axios.get("http://localhost:5000/api/showtimes");
 
-      if (data) {
-        setMovie({
-          id: data.id,
-          title: data.title,
-        });
+        if (movieData) {
+          setMovie({
+            id: movieData.id,
+            title: movieData.title,
+          });
+        }
+
+        const filteredShowtimes = showtimeRes.data.showtimes.filter(
+          (showtime) => showtime.movieId === Number(id)
+        );
+
+        setShowtimes(filteredShowtimes);
+      } catch (error) {
+        console.error("Seanslar alınamadı:", error);
+      } finally {
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
-    fetchMovie();
+    fetchData();
   }, [id]);
 
   if (loading) {
@@ -64,8 +72,8 @@ const Showtimes = () => {
         </div>
 
         <div className="showtimes-page__grid">
-          {movieShowtimes.length > 0 ? (
-            movieShowtimes.map((showtime) => (
+          {showtimes.length > 0 ? (
+            showtimes.map((showtime) => (
               <div className="showtime-card" key={showtime.id}>
                 <div className="showtime-card__top">
                   <span className="showtime-card__format">{showtime.format}</span>
