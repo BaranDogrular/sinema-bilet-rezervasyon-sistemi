@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getMovieById, getImageUrl, getMovieTrailer } from "../../services/tmdb";
+import axios from "axios";
+import { getMovieTrailer } from "../../services/tmdb";
 import "./MovieDetail.css";
 
 const MovieDetail = () => {
@@ -11,32 +12,27 @@ const MovieDetail = () => {
 
   useEffect(() => {
     const fetchMovie = async () => {
-      setLoading(true);
+      try {
+        setLoading(true);
 
-      const data = await getMovieById(id);
-      const trailerData = await getMovieTrailer(id);
+        const response = await axios.get(
+          `http://localhost:5000/api/movies/${id}`
+        );
 
-      if (data) {
-        setMovie({
-          id: data.id,
-          title: data.title,
-          genre: data.genres?.map((genre) => genre.name).join(" / ") || "Film",
-          duration: data.runtime ? `${data.runtime} dk` : "Bilinmiyor",
-          rating: data.vote_average ? data.vote_average.toFixed(1) : "N/A",
-          image: getImageUrl(data.poster_path),
-          description: data.overview || "Açıklama bulunamadı.",
-          backdrop: getImageUrl(data.backdrop_path),
-          releaseDate: data.release_date || "Bilinmiyor",
-        });
+        setMovie(response.data);
+
+        const trailerData = await getMovieTrailer(id);
+
+        if (trailerData) {
+          setTrailer(trailerData.key);
+        } else {
+          setTrailer(null);
+        }
+      } catch (error) {
+        console.error("Film detayı alınamadı:", error);
+      } finally {
+        setLoading(false);
       }
-
-      if (trailerData) {
-        setTrailer(trailerData.key);
-      } else {
-        setTrailer(null);
-      }
-
-      setLoading(false);
     };
 
     fetchMovie();

@@ -1,12 +1,14 @@
 import express from "express";
 import {
-  getAllShowtimes,
-  getShowtimeById,
-} from "../controllers/showtimeController.js";
+  getAuthStatus,
+  registerUser,
+  loginUser,
+} from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.get("/", getAllShowtimes);
-router.get("/:id", getShowtimeById);
+router.get("/", getAuthStatus);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
 
 export default router;

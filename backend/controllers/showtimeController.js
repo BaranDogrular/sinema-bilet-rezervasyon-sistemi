@@ -1,42 +1,158 @@
+const showtimes = [
+ {
+    id: 1,
+    movieId: 687163,
+    hall: "Salon 1",
+    date: "15 Nisan 2026",
+    time: "13:00",
+    price: 180,
+    format: "2D",
+  },
+  {
+    id: 2,
+    movieId: 687163,
+    hall: "Salon 3",
+    date: "15 Nisan 2026",
+    time: "16:30",
+    price: 220,
+    format: "IMAX",
+  },
+  {
+    id: 3,
+    movieId: 687163,
+    hall: "Salon 2",
+    date: "15 Nisan 2026",
+    time: "20:00",
+    price: 200,
+    format: "3D",
+  },
+  {
+    id: 4,
+    movieId: 872585,
+    hall: "Salon 4",
+    date: "15 Nisan 2026",
+    time: "14:00",
+    price: 170,
+    format: "2D",
+  },
+  {
+    id: 5,
+    movieId: 872585,
+    hall: "Salon 1",
+    date: "15 Nisan 2026",
+    time: "18:30",
+    price: 210,
+    format: "IMAX",
+  },
+  {
+    id: 6,
+    movieId: 157336,
+    hall: "Salon 5",
+    date: "15 Nisan 2026",
+    time: "17:00",
+    price: 190,
+    format: "2D",
+  },
+  {
+    id: 7,
+    movieId: 414906,
+    hall: "Salon 2",
+    date: "15 Nisan 2026",
+    time: "21:00",
+    price: 200,
+    format: "3D",
+  },
+{
+  id: 8,
+  movieId: 1325734,
+  hall: "Salon 1",
+  date: "16 Nisan 2026",
+  time: "14:00",
+  price: 200,
+  format: "IMAX",
+},
+{
+  id: 9,
+  movieId: 693134,
+  hall: "Salon 2",
+  date: "16 Nisan 2026",
+  time: "17:00",
+  price: 180,
+  format: "2D",
+},
+{
+  id: 10,
+  movieId: 969681,
+  hall: "Salon 3",
+  date: "16 Nisan 2026",
+  time: "19:30",
+  price: 170,
+  format: "2D",
+},
+{
+  id: 12,
+  movieId: 858024,
+  hall: "Salon 4",
+  date: "16 Nisan 2026",
+  time: "21:30",
+  price: 220,
+  format: "IMAX",
+},{
+  id: 13,
+  movieId: 858024,
+  hall: "Salon 7",
+  date: "17 Nisan 2026",
+  time: "13:30",
+  price: 220,
+  format: "3D",
+},{
+  id: 14,
+  movieId: 969681,
+  hall: "Salon 1",
+  date: "17 Nisan 2026",
+  time: "00.00",
+  price: 220,
+  format: "2D",
+},{
+  id: 15,
+  movieId: 693134,
+  hall: "Salon 3",
+  date: "16 Nisan 2026",
+  time: "19:30",
+  price: 220,
+  format: "IMAX",
+},{
+  id: 16,
+  movieId: 1325734,
+  hall: "Salon 5",
+  date: "16 Nisan 2026",
+  time: "21:30",
+  price: 220,
+  format: "IMAX",
+},
+{
+  id: 17,
+  movieId: 414906,
+  hall: "Salon 9",
+  date: "16 Nisan 2026",
+  time: "21:30",
+  price: 220,
+  format: "IMAX",
+},
+];
+
 export const getAllShowtimes = (req, res) => {
-  res.json({
-    message: "Showtimes route çalışıyor.",
-    showtimes: [
-      {
-        id: 1,
-        movieId: 1,
-        hall: "Salon 1",
-        date: "16 Nisan 2026",
-        time: "13:00",
-        price: 180,
-        format: "2D",
-      },
-      {
-        id: 2,
-        movieId: 1,
-        hall: "Salon 2",
-        date: "16 Nisan 2026",
-        time: "16:30",
-        price: 220,
-        format: "IMAX",
-      },
-      {
-        id: 3,
-        movieId: 2,
-        hall: "Salon 3",
-        date: "16 Nisan 2026",
-        time: "20:00",
-        price: 200,
-        format: "3D",
-      },
-    ],
-  });
+  res.json({ showtimes });
 };
 
 export const getShowtimeById = (req, res) => {
   const { id } = req.params;
 
-  res.json({
-    message: `Showtime detail endpoint çalışıyor. Seans id: ${id}`,
-  });
+  const showtime = showtimes.find((item) => item.id === Number(id));
+
+  if (!showtime) {
+    return res.status(404).json({ message: "Seans bulunamadı." });
+  }
+
+  res.json(showtime);
 };

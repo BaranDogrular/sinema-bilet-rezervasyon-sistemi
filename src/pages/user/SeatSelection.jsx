@@ -1,48 +1,51 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import showtimes from "../../data/showtimes";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 import { getSeatsByShowtime } from "../../data/seats";
-import { getMovieById } from "../../services/tmdb";
 import "./SeatSelection.css";
 
 const SeatSelection = () => {
   const { showtimeId } = useParams();
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [showtime, setShowtime] = useState(null);
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const showtime = showtimes.find(
-    (item) => item.id === Number(showtimeId)
-  );
+  const [submitting, setSubmitting] = useState(false);
 
   const seats = useMemo(() => {
     return getSeatsByShowtime(Number(showtimeId));
   }, [showtimeId]);
 
   useEffect(() => {
-    const fetchMovie = async () => {
-      if (!showtime) {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const showtimeRes = await axios.get(
+          `http://localhost:5000/api/showtimes/${showtimeId}`
+        );
+
+        const currentShowtime = showtimeRes.data;
+        setShowtime(currentShowtime);
+
+        const movieRes = await axios.get(
+          `http://localhost:5000/api/movies/${currentShowtime.movieId}`
+        );
+
+        setMovie(movieRes.data);
+      } catch (error) {
+        console.error("Seans veya film bilgisi alınamadı:", error);
+      } finally {
         setLoading(false);
-        return;
       }
-
-      setLoading(true);
-
-      const data = await getMovieById(showtime.movieId);
-
-      if (data) {
-        setMovie({
-          id: data.id,
-          title: data.title,
-        });
-      }
-
-      setLoading(false);
     };
 
-    fetchMovie();
-  }, [showtime]);
+    fetchData();
+  }, [showtimeId]);
 
   const toggleSeat = (seat) => {
     if (seat.isReserved) return;
@@ -53,6 +56,44 @@ const SeatSelection = () => {
       setSelectedSeats(selectedSeats.filter((item) => item !== seat.id));
     } else {
       setSelectedSeats([...selectedSeats, seat.id]);
+    }
+  };
+
+  const totalPrice = selectedSeats.length * (showtime?.price || 0);
+
+  const handleReservation = async () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    if (!showtime || !movie || selectedSeats.length === 0) return;
+
+    try {
+      setSubmitting(true);
+
+      const payload = {
+        userId: user.id,
+        movieTitle: movie.title,
+        date: showtime.date,
+        time: showtime.time,
+        hall: showtime.hall,
+        seats: selectedSeats,
+        totalPrice,
+      };
+
+      const response = await axios.post(
+        "http://localhost:5000/api/reservations",
+        payload
+      );
+
+      alert(response.data.message);
+      navigate("/my-reservations");
+    } catch (error) {
+      console.error("Rezervasyon oluşturulamadı:", error);
+      alert("Rezervasyon sırasında bir hata oluştu.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -82,8 +123,6 @@ const SeatSelection = () => {
     );
   }
 
-  const totalPrice = selectedSeats.length * showtime.price;
-
   return (
     <section className="seat-selection">
       <div className="container">
@@ -105,10 +144,9 @@ const SeatSelection = () => {
               return (
                 <button
                   key={seat.id}
-                  className={`seat 
-                    ${seat.isReserved ? "seat--reserved" : ""}
-                    ${isSelected ? "seat--selected" : ""}
-                  `}
+                  className={`seat ${
+                    seat.isReserved ? "seat--reserved" : ""
+                  } ${isSelected ? "seat--selected" : ""}`}
                   onClick={() => toggleSeat(seat)}
                 >
                   {seat.id}
@@ -159,9 +197,10 @@ const SeatSelection = () => {
 
             <button
               className="booking-summary__button"
-              disabled={selectedSeats.length === 0}
+              disabled={selectedSeats.length === 0 || submitting}
+              onClick={handleReservation}
             >
-              Rezervasyonu Tamamla
+              {submitting ? "Kaydediliyor..." : "Rezervasyonu Tamamla"}
             </button>
 
             <Link

@@ -1,18 +1,53 @@
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import reservations from "../../data/reservations";
 import "./MyReservations.css";
 
 const MyReservations = () => {
   const { user, isAuthenticated } = useAuth();
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        setLoading(true);
+
+        const response = await axios.get(
+          "http://localhost:5000/api/reservations"
+        );
+
+        const userReservations = response.data.reservations.filter(
+          (reservation) => reservation.userId === user?.id
+        );
+
+        setReservations(userReservations);
+      } catch (error) {
+        console.error("Rezervasyonlar alınamadı:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchReservations();
+    }
+  }, [user]);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  const userReservations = reservations.filter(
-    (reservation) => reservation.userId === user.id
-  );
+  if (loading) {
+    return (
+      <section className="reservations-page">
+        <div className="container">
+          <h2>Rezervasyonlar yükleniyor...</h2>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="reservations-page">
@@ -26,8 +61,8 @@ const MyReservations = () => {
         </div>
 
         <div className="reservations-page__list">
-          {userReservations.length > 0 ? (
-            userReservations.map((reservation) => (
+          {reservations.length > 0 ? (
+            reservations.map((reservation) => (
               <div className="reservation-card" key={reservation.id}>
                 <div className="reservation-card__top">
                   <h3 className="reservation-card__title">
