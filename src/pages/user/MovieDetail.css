@@ -207,3 +207,17 @@
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
+.movie-detail__trailer {
+  margin-top: 50px;
+}
+
+.movie-detail__trailer-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.movie-detail__trailer iframe {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}

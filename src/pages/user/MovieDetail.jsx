@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import { getMovieTrailer } from "../../services/tmdb";
 import "./MovieDetail.css";
 
 const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,6 +20,14 @@ const MovieDetail = () => {
         );
 
         setMovie(response.data);
+
+        const trailerData = await getMovieTrailer(id);
+
+        if (trailerData) {
+          setTrailer(trailerData.key);
+        } else {
+          setTrailer(null);
+        }
       } catch (error) {
         console.error("Film detayı alınamadı:", error);
       } finally {
@@ -111,6 +121,22 @@ const MovieDetail = () => {
           </div>
         </div>
       </div>
+
+      {trailer && (
+        <div className="container movie-detail__trailer">
+          <h3 className="movie-detail__trailer-title">Fragman</h3>
+
+          <iframe
+            width="100%"
+            height="500"
+            src={`https://www.youtube.com/embed/${trailer}`}
+            title={`${movie.title} Trailer`}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
     </section>
   );
 };
