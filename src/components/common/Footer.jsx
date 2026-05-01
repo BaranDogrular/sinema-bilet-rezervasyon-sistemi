@@ -1,3 +1,4 @@
+import footerLogo from "../../assets/images/footer-logo.png";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 
@@ -7,15 +8,15 @@ const Footer = () => {
       <div className="container">
         <div className="footer__top">
           <div className="footer__brand">
-            <h2>
-              Eden <span>Cineverse</span>
-            </h2>
-            <p>
-              En sevdiğin filmler için hızlı, güvenli ve premium rezervasyon
-              deneyimi.
-            </p>
-          </div>
-
+          <img
+          src={footerLogo}
+          alt="Eden Cineverse"
+          className="footer__logo-img"
+          />
+          <p>
+          En sevdiğin filmler için hızlı, güvenli ve premium rezervasyon deneyimi.
+          </p>
+          </div>  
           <div className="footer__column">
             <h3>Sayfalar</h3>
             <ul>
