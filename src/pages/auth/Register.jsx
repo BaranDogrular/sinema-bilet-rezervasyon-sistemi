@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -25,7 +26,7 @@ const Register = () => {
   e.preventDefault();
 
   if (formData.password !== formData.confirmPassword) {
-    alert("Şifreler eşleşmiyor.");
+    toast.error("Şifreler eşleşmiyor.");
     return;
   }
 
@@ -36,9 +37,10 @@ const Register = () => {
   );
 
   if (result.success) {
+    toast.success("Kayıt başarılı!");
     navigate("/profile");
   } else {
-    alert(result.message);
+    toast.error(result.message);
   }
 };
 

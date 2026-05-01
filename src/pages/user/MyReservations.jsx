@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 import "./MyReservations.css";
 
 const MyReservations = () => {
@@ -40,15 +41,7 @@ const MyReservations = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (loading) {
-    return (
-      <section className="reservations-page">
-        <div className="container">
-          <h2>Rezervasyonlar yükleniyor...</h2>
-        </div>
-      </section>
-    );
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <section className="reservations-page">
@@ -103,9 +96,10 @@ const MyReservations = () => {
               </div>
             ))
           ) : (
-            <p className="reservations-page__empty">
-              Henüz bir rezervasyon bulunmuyor.
-            </p>
+            <div className="empty-state">
+              <h3>Henüz rezervasyon yok</h3>
+              <p>İlk biletini oluşturmak için filmler sayfasından bir seans seçebilirsin.</p>
+            </div>
           )}
         </div>
       </div>

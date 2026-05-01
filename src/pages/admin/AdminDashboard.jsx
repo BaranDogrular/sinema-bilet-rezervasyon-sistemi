@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "./AdminDashboard.css";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -11,18 +12,29 @@ const AdminDashboard = () => {
     users: 0,
   });
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/admin/stats");
+        setLoading(true);
+
+        const response = await axios.get(
+          "http://localhost:5000/api/admin/stats"
+        );
+
         setStats(response.data);
       } catch (error) {
         console.error("Admin istatistikleri alınamadı:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchStats();
   }, []);
+
+  if (loading) return <LoadingSpinner />;
 
   return (
     <section className="admin-dashboard">
@@ -31,7 +43,8 @@ const AdminDashboard = () => {
           <p className="admin-dashboard__subtitle">Yönetim Paneli</p>
           <h1 className="admin-dashboard__title">Admin Panel</h1>
           <p className="admin-dashboard__text">
-            Filmleri, seansları, kullanıcıları ve rezervasyonları buradan yönetebilirsin.
+            Filmleri, seansları, kullanıcıları ve rezervasyonları buradan
+            yönetebilirsin.
           </p>
         </div>
 
@@ -68,7 +81,10 @@ const AdminDashboard = () => {
             <p>Seans ekle, listele veya sil.</p>
           </Link>
 
-          <Link to="/admin/reservations" className="admin-dashboard__action-card">
+          <Link
+            to="/admin/reservations"
+            className="admin-dashboard__action-card"
+          >
             <h3>Rezervasyon Yönetimi</h3>
             <p>Tüm rezervasyonları görüntüle.</p>
           </Link>

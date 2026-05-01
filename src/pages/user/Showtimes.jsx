@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import "./Showtimes.css";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
 
 const Showtimes = () => {
   const { id } = useParams();
@@ -35,15 +36,7 @@ const Showtimes = () => {
     fetchShowtimes();
   }, [id]);
 
-  if (loading) {
-    return (
-      <section className="showtimes-page">
-        <div className="container">
-          <h2>Seanslar yükleniyor...</h2>
-        </div>
-      </section>
-    );
-  }
+  if (loading) return <LoadingSpinner />;
 
   if (!movie) {
     return (

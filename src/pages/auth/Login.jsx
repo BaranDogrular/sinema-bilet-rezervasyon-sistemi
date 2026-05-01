@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 import "./Auth.css";
 
@@ -19,10 +20,20 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData.email, formData.password);
-    navigate("/profile");
+
+    const result = await login(formData.email, formData.password);
+
+    if (result.success) {
+      toast.success("Giriş başarılı!");
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 800);
+    } else {
+      toast.error(result.message || "Giriş başarısız.");
+    }
   };
 
   return (

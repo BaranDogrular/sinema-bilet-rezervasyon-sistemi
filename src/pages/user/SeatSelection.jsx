@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -96,11 +97,11 @@ const SeatSelection = () => {
         payload
       );
 
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate("/my-reservations");
     } catch (error) {
       console.error("Rezervasyon oluşturulamadı:", error);
-      alert("Rezervasyon sırasında bir hata oluştu.");
+      toast.error("Rezervasyon sırasında bir hata oluştu.");
     } finally {
       setSubmitting(false);
     }
