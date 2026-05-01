@@ -8,9 +8,12 @@ const Footer = () => {
         <div className="footer__top">
           <div className="footer__brand">
             <h2>
-              Eden<span>Cineverse</span>
+              Eden <span>Cineverse</span>
             </h2>
-            <p>En sevdiğin filmler için hızlı ve güvenli rezervasyon deneyimi.</p>
+            <p>
+              En sevdiğin filmler için hızlı, güvenli ve premium rezervasyon
+              deneyimi.
+            </p>
           </div>
 
           <div className="footer__column">
@@ -40,7 +43,7 @@ const Footer = () => {
         </div>
 
         <div className="footer__bottom">
-          <p>© 2026 EdenCineverse. Tüm hakları saklıdır.</p>
+          <p>© 2026 Eden Cineverse. Tüm hakları saklıdır.</p>
         </div>
       </div>
     </footer>
