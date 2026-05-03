@@ -1,5 +1,12 @@
 .navbar {
-  background: #000000;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
   border-bottom: 1px solid rgba(245, 197, 66, 0.12);
   padding: 14px 0;
   font-family: "Montserrat", sans-serif;

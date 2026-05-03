@@ -18,6 +18,7 @@ const movieIds = [
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [loadingMovies, setLoadingMovies] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -39,6 +40,7 @@ const Home = () => {
               ? movie.vote_average.toFixed(1)
               : "N/A",
             image: getImageUrl(movie.poster_path),
+            backdrop: getImageUrl(movie.backdrop_path || movie.poster_path),
             description: movie.overview || "Açıklama yok",
           };
         })
@@ -51,43 +53,102 @@ const Home = () => {
     fetchMovies();
   }, []);
 
+  useEffect(() => {
+    if (movies.length === 0) return;
+
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % movies.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [movies]);
+
+  const activeMovie = movies[activeIndex];
+
+  const handlePrev = () => {
+    setActiveIndex((prev) =>
+      prev === 0 ? movies.length - 1 : prev - 1
+    );
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % movies.length);
+  };
+
   return (
     <>
-      <section className="home-hero">
-        <div className="container home-hero__container">
-          <div className="home-hero__content">
-            <span className="home-hero__badge">
-              Premium Sinema Rezervasyon Deneyimi
-            </span>
+      <section
+        className="home-hero-slider"
+        style={{
+          backgroundImage: activeMovie
+            ? `linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.72) 42%, rgba(0,0,0,0.35) 100%), url(${activeMovie.backdrop})`
+            : "none",
+        }}
+      >
+        <div className="container home-hero-slider__container">
+          <div className="home-hero-slider__content">
+            <span className="home-hero-slider__badge">Vizyonda</span>
 
-            <h1 className="home-hero__title">
-              Sinema Keyfini
-              <span> Koltuğunu Seçerek Yaşa</span>
+            <h1 className="home-hero-slider__title">
+              {activeMovie?.title || "Eden Cineverse"}
             </h1>
 
-            <p className="home-hero__text">
-              Vizyondaki filmleri keşfet, sana en uygun seansı seç ve
-              rezervasyonunu modern, hızlı ve güvenli bir deneyimle tamamla.
+            <p className="home-hero-slider__text">
+              {activeMovie?.description ||
+                "Vizyondaki filmleri keşfet, seansını seç ve koltuğunu hemen ayırt."}
             </p>
 
-            <div className="home-hero__actions">
-              <a href="#featured-movies" className="home-hero__primary-btn">
-                Filmleri İncele
+            <div className="home-hero-slider__meta">
+              <span>⭐ {activeMovie?.rating || "N/A"}</span>
+              <span>{activeMovie?.duration || "Bilinmiyor"}</span>
+              <span>{activeMovie?.genre || "Film"}</span>
+            </div>
+
+            <div className="home-hero-slider__actions">
+              {activeMovie && (
+                <Link
+                  to={`/movies/${activeMovie.id}`}
+                  className="home-hero-slider__primary-btn"
+                >
+                  İncele
+                </Link>
+              )}
+
+              <a
+                href="#featured-movies"
+                className="home-hero-slider__secondary-btn"
+              >
+                Filmleri Keşfet
               </a>
-
-              <Link to="/movies" className="home-hero__secondary-btn">
-                Tüm Filmler
-              </Link>
             </div>
           </div>
 
-          <div className="home-hero__visual">
-            <div className="home-hero__card">
-              <p className="home-hero__card-label">Bugünün Öne Çıkanı</p>
-              <h3 className="home-hero__card-title">Project Hail Mary</h3>
-              <p className="home-hero__card-info">IMAX • 19:30 • Salon 3</p>
+          {!loadingMovies && movies.length > 0 && (
+            <div className="home-hero-slider__posters">
+              {movies.slice(0, 4).map((movie, index) => (
+                <button
+                  key={movie.id}
+                  className={`home-hero-slider__poster ${
+                    activeIndex === index ? "active" : ""
+                  }`}
+                  onClick={() => setActiveIndex(index)}
+                  type="button"
+                >
+                  <img src={movie.image} alt={movie.title} />
+                </button>
+              ))}
             </div>
-          </div>
+          )}
+
+          {!loadingMovies && movies.length > 0 && (
+            <div className="home-hero-slider__controls">
+              <button onClick={handlePrev} type="button">‹</button>
+              <span>
+                {activeIndex + 1} / {movies.length}
+              </span>
+              <button onClick={handleNext} type="button">›</button>
+            </div>
+          )}
         </div>
       </section>
 
