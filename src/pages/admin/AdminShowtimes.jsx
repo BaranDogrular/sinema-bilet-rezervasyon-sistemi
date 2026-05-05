@@ -17,8 +17,8 @@ const AdminShowtimes = () => {
 
   const fetchData = async () => {
     try {
-      const movieRes = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
-      const showtimeRes = await axios.get("${import.meta.env.VITE_API_URL}/api/showtimes");
+      const movieRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/movies`);
+      const showtimeRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/showtimes`);
 
       setMovies(movieRes.data.movies || []);
       setShowtimes(showtimeRes.data.showtimes || []);
@@ -42,7 +42,7 @@ const AdminShowtimes = () => {
     e.preventDefault();
 
     try {
-      await axios.post("${import.meta.env.VITE_API_URL}/api/showtimes", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/showtimes`, {
         movieId: Number(formData.movieId),
         hall: formData.hall,
         date: formData.date,

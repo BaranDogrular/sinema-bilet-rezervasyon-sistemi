@@ -93,7 +93,7 @@ const SeatSelection = () => {
       };
 
       const response = await axios.post(
-        "${import.meta.env.VITE_API_URL}/api/reservations",
+        `${import.meta.env.VITE_API_URL}/api/reservations`,
         payload
       );
 

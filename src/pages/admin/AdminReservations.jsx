@@ -9,7 +9,7 @@ const AdminReservations = () => {
     const fetchReservations = async () => {
       try {
         const response = await axios.get(
-          "${import.meta.env.VITE_API_URL}/api/admin/reservations"
+          `${import.meta.env.VITE_API_URL}/api/admin/reservations`
         );
 
         setReservations(response.data.reservations || []);

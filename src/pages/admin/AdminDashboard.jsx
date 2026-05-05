@@ -20,7 +20,7 @@ const AdminDashboard = () => {
         setLoading(true);
 
         const response = await axios.get(
-          "${import.meta.env.VITE_API_URL}/api/admin/stats"
+          `${import.meta.env.VITE_API_URL}/api/admin/stats`
         );
 
         setStats(response.data);

@@ -17,7 +17,7 @@ const MyReservations = () => {
         setLoading(true);
 
         const response = await axios.get(
-          "${import.meta.env.VITE_API_URL}/api/reservations"
+          `${import.meta.env.VITE_API_URL}/api/reservations`
         );
 
         const userReservations = response.data.reservations.filter(

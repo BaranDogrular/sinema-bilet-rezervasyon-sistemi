@@ -13,7 +13,7 @@ const Movies = () => {
       try {
         setLoading(true);
 
-        const response = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/movies`);
 
         setMovies(response.data.movies || []);
       } catch (error) {
