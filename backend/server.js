@@ -8,7 +8,6 @@ import showtimeRoutes from "./routes/showtimeRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import reservationRoutes from "./routes/reservationRoutes.js";
 import seatRoutes from "./routes/seatRoutes.js";
-import "./scripts/seedMoviesFromTmdb.js";
 
 dotenv.config();
 
