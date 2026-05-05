@@ -1,0 +1,47 @@
+# Query: localhost
+
+22 results - 11 files
+
+src\context\AuthContext.jsx:
+  22:       const response = await axios.post("${import.meta.env.VITE_API_URL}/api/auth/login", {
+  42:   const response = await axios.post("${import.meta.env.VITE_API_URL}/api/auth/register", {
+
+src\pages\admin\AdminMovies.jsx:
+  19:     const response = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
+  37:     await axios.post("${import.meta.env.VITE_API_URL}/api/movies", {
+  57:     await axios.delete(`${import.meta.env.VITE_API_URL}/api/movies/${id}`);
+
+src\pages\admin\AdminReservations.jsx:
+  12:           "${import.meta.env.VITE_API_URL}/api/admin/reservations"
+
+src\pages\admin\AdminShowtimes.jsx:
+  20:       const movieRes = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
+  21:       const showtimeRes = await axios.get("${import.meta.env.VITE_API_URL}/api/showtimes");
+  45:       await axios.post("${import.meta.env.VITE_API_URL}/api/showtimes", {
+  72:       await axios.delete(`${import.meta.env.VITE_API_URL}/api/showtimes/${id}`);
+
+src\pages\admin\AdminUsers.jsx:
+  11:         const response = await axios.get("${import.meta.env.VITE_API_URL}/api/admin/users");
+
+src\pages\user\Home.jsx:
+  27:         const nowRes = await fetch("${import.meta.env.VITE_API_URL}/api/movies/now-showing");
+  28:         const comingRes = await fetch("${import.meta.env.VITE_API_URL}/api/movies/coming-soon");
+
+src\pages\user\MovieDetail.jsx:
+  17:           `${import.meta.env.VITE_API_URL}/api/movies/${id}`
+
+src\pages\user\Movies.jsx:
+  16:         const response = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
+
+src\pages\user\MyReservations.jsx:
+  20:           "${import.meta.env.VITE_API_URL}/api/reservations"
+
+src\pages\user\SeatSelection.jsx:
+  26:           `${import.meta.env.VITE_API_URL}/api/showtimes/${showtimeId}`
+  33:           `${import.meta.env.VITE_API_URL}/api/movies/${currentShowtime.movieId}`
+  38:           `${import.meta.env.VITE_API_URL}/api/seats/${showtimeId}`
+  96:         "${import.meta.env.VITE_API_URL}/api/reservations",
+
+src\pages\user\Showtimes.jsx:
+  19:         const movieRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/movies/${id}`);
+  23:           `${import.meta.env.VITE_API_URL}/api/showtimes/movie/${id}`

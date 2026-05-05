@@ -23,19 +23,19 @@ const SeatSelection = () => {
         setLoading(true);
 
         const showtimeRes = await axios.get(
-          `http://localhost:5000/api/showtimes/${showtimeId}`
+          `${import.meta.env.VITE_API_URL}/api/showtimes/${showtimeId}`
         );
 
         const currentShowtime = showtimeRes.data;
         setShowtime(currentShowtime);
 
         const movieRes = await axios.get(
-          `http://localhost:5000/api/movies/${currentShowtime.movieId}`
+          `${import.meta.env.VITE_API_URL}/api/movies/${currentShowtime.movieId}`
         );
         setMovie(movieRes.data);
 
         const seatsRes = await axios.get(
-          `http://localhost:5000/api/seats/${showtimeId}`
+          `${import.meta.env.VITE_API_URL}/api/seats/${showtimeId}`
         );
         setSeats(seatsRes.data.seats);
       } catch (error) {
@@ -93,7 +93,7 @@ const SeatSelection = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/reservations",
+        "${import.meta.env.VITE_API_URL}/api/reservations",
         payload
       );
 

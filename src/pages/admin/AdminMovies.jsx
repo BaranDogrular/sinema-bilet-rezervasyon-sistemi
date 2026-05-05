@@ -16,7 +16,7 @@ const AdminMovies = () => {
   });
 
   const fetchMovies = async () => {
-    const response = await axios.get("http://localhost:5000/api/movies");
+    const response = await axios.get("${import.meta.env.VITE_API_URL}/api/movies");
     setMovies(response.data.movies || response.data);
   };
 
@@ -34,7 +34,7 @@ const AdminMovies = () => {
   const handleAddMovie = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:5000/api/movies", {
+    await axios.post("${import.meta.env.VITE_API_URL}/api/movies", {
       ...formData,
       tmdbId: formData.tmdbId ? Number(formData.tmdbId) : null,
     });
@@ -54,7 +54,7 @@ const AdminMovies = () => {
   };
 
   const handleDeleteMovie = async (id) => {
-    await axios.delete(`http://localhost:5000/api/movies/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/movies/${id}`);
     fetchMovies();
   };
 

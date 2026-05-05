@@ -14,7 +14,7 @@ const MovieDetail = () => {
         setLoading(true);
 
         const response = await axios.get(
-          `http://localhost:5000/api/movies/${id}`
+          `${import.meta.env.VITE_API_URL}/api/movies/${id}`
         );
 
         setMovie(response.data);
