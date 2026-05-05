@@ -24,9 +24,7 @@ export const getAllMovies = async (req, res) => {
       ORDER BY id ASC
     `);
 
-    const movies = result.rows.map(formatMovie);
-
-    res.json({ movies });
+    res.json({ movies: result.rows.map(formatMovie) });
   } catch (error) {
     res.status(500).json({
       message: "Filmler alınamadı.",
@@ -40,13 +38,11 @@ export const getNowShowingMovies = async (req, res) => {
     const result = await pool.query(`
       SELECT *
       FROM movies
-      WHERE status = 'now_showing'
+      WHERE status = 'now-showing'
       ORDER BY id ASC
     `);
 
-    const movies = result.rows.map(formatMovie);
-
-    res.json({ movies });
+    res.json({ movies: result.rows.map(formatMovie) });
   } catch (error) {
     res.status(500).json({
       message: "Vizyondaki filmler alınamadı.",
@@ -60,13 +56,11 @@ export const getComingSoonMovies = async (req, res) => {
     const result = await pool.query(`
       SELECT *
       FROM movies
-      WHERE status = 'coming_soon'
+      WHERE status = 'coming-soon'
       ORDER BY id ASC
     `);
 
-    const movies = result.rows.map(formatMovie);
-
-    res.json({ movies });
+    res.json({ movies: result.rows.map(formatMovie) });
   } catch (error) {
     res.status(500).json({
       message: "Yakında gelecek filmler alınamadı.",
@@ -74,6 +68,7 @@ export const getComingSoonMovies = async (req, res) => {
     });
   }
 };
+
 export const getMovieById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -113,7 +108,7 @@ export const createMovie = async (req, res) => {
       image,
       description,
       releaseDate,
-      status = "now_showing",
+      status = "now-showing",
       trailerUrl = null,
     } = req.body;
 

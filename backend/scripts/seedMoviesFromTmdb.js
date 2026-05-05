@@ -63,8 +63,8 @@ const seedMovies = async () => {
       await pool.query(
         `
         INSERT INTO movies
-        (tmdb_id, title, genre, duration, rating, poster_url, description, release_date, trailer_url)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        (tmdb_id, title, genre, duration, rating, poster_url, description, release_date, trailer_url, status)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
         ON CONFLICT (tmdb_id) DO UPDATE SET
           title = EXCLUDED.title,
           genre = EXCLUDED.genre,
@@ -85,6 +85,7 @@ const seedMovies = async () => {
           description,
           releaseDate,
           trailerUrl,
+          "now-showing"
         ]
       );
 

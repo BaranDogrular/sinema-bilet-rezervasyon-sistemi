@@ -28,7 +28,8 @@ const run = async () => {
         poster_url TEXT,
         description TEXT,
         release_date DATE,
-        trailer_url TEXT
+        trailer_url TEXT,
+        status TEXT DEFAULT 'now-showing'
       );
 
       CREATE TABLE showtimes (
