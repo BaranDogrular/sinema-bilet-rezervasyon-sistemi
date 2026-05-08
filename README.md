@@ -4,7 +4,9 @@ Modern ve kullanıcı dostu bir sinema bilet rezervasyon sistemi. Kullanıcılar
 
 ---
 
-## ✨ Proje Özellikleri
+## Önizleme
+
+![Eden Cineverse Preview](https://github.com/BaranDogrular/sinema-bilet-rezervasyon-sistemi/blob/bdeddb3642b7a675142875ce7b78a784d7a037e1/screenshot.png)
 
 ### 👤 Kullanıcı Özellikleri
 
