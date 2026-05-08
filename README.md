@@ -1,16 +1,97 @@
-# React + Vite
+# 🎬 Sinema Bilet Rezervasyon Sistemi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern ve kullanıcı dostu bir sinema bilet rezervasyon sistemi. Kullanıcılar vizyondaki filmleri görüntüleyebilir, seans seçebilir ve koltuk rezervasyonu yapabilir.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## ✨ Proje Özellikleri
 
-## React Compiler
+### 👤 Kullanıcı Özellikleri
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* Kullanıcı kayıt ve giriş sistemi
+* Vizyondaki filmleri listeleme
+* Yakında gelecek filmleri görüntüleme
+* Film detay sayfası
+* Seans görüntüleme
+* Koltuk seçimi ve rezervasyon
+* Rezervasyon geçmişi
 
-## Expanding the ESLint configuration
+### 🛠️ Admin Özellikleri
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Film ekleme ve silme
+* Seans yönetimi
+* Kullanıcıları görüntüleme
+* Rezervasyon yönetimi
+* Admin dashboard istatistikleri
+
+### 🎥 TMDB Entegrasyonu
+
+* Otomatik film verisi çekme
+* Film afişleri
+* Fragman bağlantıları
+* Film puanları ve açıklamaları
+
+---
+
+## 🧰 Kullanılan Teknolojiler
+
+### Frontend
+
+* React
+* React Router DOM
+* Axios
+* CSS
+* Vite
+
+### Backend
+
+* Node.js
+* Express.js
+* PostgreSQL
+* pg
+* dotenv
+* cors
+
+### Deployment
+
+* Vercel
+* Render
+
+---
+
+## 📁 Proje Yapısı
+
+```bash
+sinema-bilet-rezervasyon-sistemi/
+│
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── routes/
+│   ├── scripts/
+│   ├── services/
+│   └── server.js
+│
+├── src/
+│   ├── components/
+│   ├── context/
+│   ├── pages/
+│   ├── routes/
+│   ├── services/
+│   └── assets/
+│
+├── public/
+└── package.json
+```
+
+---
+
+## 👨‍💻 Geliştirici Ekibi
+
+* Efe Kağan Turgut
+* Eyüp Baran Doğrular
+* Merve Beçit
+
+---
+
+⭐ Eğitim ve geliştirme amaçlı hazırlanmıştır.

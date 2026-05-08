@@ -17,8 +17,8 @@ const AdminShowtimes = () => {
 
   const fetchData = async () => {
     try {
-      const movieRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/movies`);
-      const showtimeRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/showtimes`);
+      const movieRes = await axios.get("http://localhost:5000/api/movies");
+      const showtimeRes = await axios.get("http://localhost:5000/api/showtimes");
 
       setMovies(movieRes.data.movies || []);
       setShowtimes(showtimeRes.data.showtimes || []);

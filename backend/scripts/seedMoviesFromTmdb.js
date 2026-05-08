@@ -30,10 +30,12 @@ const getTrailerUrl = async (tmdbId) => {
           vid.type === "Trailer" &&
           vid.official === true
       ) ||
-      videos.find((vid) => vid.site === "YouTube" && vid.type === "Trailer");
+      videos.find(
+        (vid) => vid.site === "YouTube" && vid.type === "Trailer"
+      );
 
     return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : null;
-  } catch {
+  } catch (error) {
     return null;
   }
 };
@@ -50,12 +52,13 @@ const seedMovies = async () => {
       const movie = response.data;
 
       const title = movie.title;
-      const genre = movie.genres?.map((item) => item.name).join(" / ") || "Film";
-      const duration = movie.runtime || null;
-      const rating = movie.vote_average || null;
-      const posterUrl = movie.poster_path
+      const genre =
+        movie.genres?.map((item) => item.name).join(" / ") || "Film";
+      const duration = movie.runtime ? `${movie.runtime} dk` : "Bilinmiyor";
+      const rating = movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
+      const image = movie.poster_path
         ? `${IMAGE_BASE_URL}${movie.poster_path}`
-        : null;
+        : "";
       const description = movie.overview || "Açıklama yok";
       const releaseDate = movie.release_date || null;
       const trailerUrl = await getTrailerUrl(tmdbId);
@@ -63,14 +66,14 @@ const seedMovies = async () => {
       await pool.query(
         `
         INSERT INTO movies
-        (tmdb_id, title, genre, duration, rating, poster_url, description, release_date, trailer_url, status)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+        (tmdb_id, title, genre, duration, rating, image, description, release_date, trailer_url)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
         ON CONFLICT (tmdb_id) DO UPDATE SET
           title = EXCLUDED.title,
           genre = EXCLUDED.genre,
           duration = EXCLUDED.duration,
           rating = EXCLUDED.rating,
-          poster_url = EXCLUDED.poster_url,
+          image = EXCLUDED.image,
           description = EXCLUDED.description,
           release_date = EXCLUDED.release_date,
           trailer_url = EXCLUDED.trailer_url
@@ -81,11 +84,10 @@ const seedMovies = async () => {
           genre,
           duration,
           rating,
-          posterUrl,
+          image,
           description,
           releaseDate,
           trailerUrl,
-          "now-showing"
         ]
       );
 

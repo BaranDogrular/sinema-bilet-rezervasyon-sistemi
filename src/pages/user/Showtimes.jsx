@@ -16,11 +16,11 @@ const Showtimes = () => {
       try {
         setLoading(true);
 
-        const movieRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/movies/${id}`);
+        const movieRes = await axios.get(`http://localhost:5000/api/movies/${id}`);
         setMovie(movieRes.data);
 
         const showtimeRes = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/showtimes/movie/${id}`
+          `http://localhost:5000/api/showtimes/movie/${id}`
         );
 
         setShowtimes(showtimeRes.data.showtimes);
